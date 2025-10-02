@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 보물 발견!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .firework {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            animation: explode 1s ease-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y));
+                opacity: 0;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--color);
+            animation: fall 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            animation: slideUp 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .treasure-icon {
+            font-size: 100px;
+            margin-bottom: 20px;
+            animation: bounce 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(255, 215, 0, 0.3));
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 36px;
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .congrats {
+            color: #ff6b6b;
+            font-size: 20px;
+            margin-bottom: 35px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .instruction {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .instruction-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .instruction-text {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 25px;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .sparkles {
+            font-size: 32px;
+            margin: 15px 0;
+            animation: twinkle 1s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.2);
+            }
+        }
+
+        .treasure-character {
+            margin-bottom: 25px;
+        }
+
+        .treasure-character svg {
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+            animation: characterBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes characterBounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .character-name {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .score-info {
+            font-size: 20px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+                border-radius: 25px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .treasure-icon {
+                font-size: 80px;
+            }
+
+            .congrats {
+                font-size: 18px;
+            }
+
+            .highlight {
+                font-size: 16px;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="character-display" class="treasure-character"></div>
+        <div id="character-name" class="character-name"></div>
+        <div id="score-display" class="score-info"></div>
+        <h1 id="main-title">🎉 축하합니다! 🎉</h1>
+
+        <div class="sparkles">✨ 🌟 ⭐ 💫 ✨</div>
+
+        <div class="instruction">
+            <div class="instruction-title">🏆 보물 인증 방법</div>
+            <div class="instruction-text">
+                지금 바로 이 화면을 캡쳐해서<br>
+                <strong style="color: #667eea; font-size: 18px;">3가부 카톡</strong>에 인증해주세요!
+            </div>
+        </div>
+
+        <div class="highlight">
+            📸 캡쳐 → 카톡 전송 → 완료!
+        </div>
+    </div>
+
+    <script>
+        // SVG 캐릭터 데이터
+        const CHARACTERS = {
+            'paul': {
+                name: '바울',
+                message: '믿음의 전도자를 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="60" r="35" fill="#f4a460"/><rect x="70" y="90" width="60" height="80" rx="10" fill="#8b4513"/><rect x="60" y="95" width="20" height="60" fill="#f4a460"/><rect x="120" y="95" width="20" height="60" fill="#f4a460"/><path d="M 85 50 Q 100 40 115 50" stroke="#654321" stroke-width="3" fill="none"/><circle cx="90" cy="60" r="5" fill="#000"/><circle cx="110" cy="60" r="5" fill="#000"/><path d="M 90 70 Q 100 75 110 70" stroke="#654321" stroke-width="2" fill="none"/><rect x="70" y="35" width="60" height="15" rx="5" fill="#654321"/></svg>'
+            },
+            'noah': {
+                name: '노아',
+                message: '방주의 선장을 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="60" r="35" fill="#f4a460"/><rect x="70" y="90" width="60" height="80" rx="10" fill="#6b8e23"/><rect x="60" y="95" width="20" height="60" fill="#f4a460"/><rect x="120" y="95" width="20" height="60" fill="#f4a460"/><circle cx="90" cy="60" r="5" fill="#000"/><circle cx="110" cy="60" r="5" fill="#000"/><path d="M 85 70 Q 100 75 115 70" stroke="#654321" stroke-width="2" fill="none"/><rect x="75" y="35" width="50" height="20" rx="25" fill="#8b4513"/><path d="M 80 50 Q 100 40 120 50" stroke="#fff" stroke-width="2" fill="none"/></svg>'
+            },
+            'elijah': {
+                name: '엘리야',
+                message: '불의 전차를 탄 선지자를 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="60" r="35" fill="#d2691e"/><rect x="70" y="90" width="60" height="80" rx="10" fill="#dc143c"/><rect x="60" y="95" width="20" height="60" fill="#d2691e"/><rect x="120" y="95" width="20" height="60" fill="#d2691e"/><circle cx="90" cy="60" r="5" fill="#000"/><circle cx="110" cy="60" r="5" fill="#000"/><path d="M 88 70 Q 100 76 112 70" stroke="#654321" stroke-width="2" fill="none"/><path d="M 70 45 Q 100 25 130 45" fill="none" stroke="#654321" stroke-width="3"/><path d="M 85 150 L 95 180 M 105 150 L 115 180" stroke="#ff4500" stroke-width="3"/></svg>'
+            },
+            'jesus': {
+                name: '예수님',
+                message: '세상의 빛을 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="60" r="35" fill="#f4a460"/><rect x="65" y="90" width="70" height="85" rx="10" fill="#fff"/><rect x="55" y="95" width="20" height="60" fill="#f4a460"/><rect x="125" y="95" width="20" height="60" fill="#f4a460"/><circle cx="90" cy="60" r="5" fill="#4169e1"/><circle cx="110" cy="60" r="5" fill="#4169e1"/><path d="M 88 70 Q 100 76 112 70" stroke="#654321" stroke-width="2" fill="none"/><path d="M 80 40 Q 100 30 120 40" stroke="#654321" stroke-width="3" fill="none"/><circle cx="100" cy="30" r="25" fill="none" stroke="#ffd700" stroke-width="3"/><path d="M 100 10 L 100 50 M 80 30 L 120 30" stroke="#ffd700" stroke-width="2"/></svg>'
+            },
+            'moses': {
+                name: '모세',
+                message: '율법의 전달자를 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="60" r="35" fill="#d2b48c"/><rect x="70" y="90" width="60" height="80" rx="10" fill="#4682b4"/><rect x="60" y="95" width="20" height="60" fill="#d2b48c"/><rect x="120" y="95" width="20" height="60" fill="#d2b48c"/><circle cx="90" cy="60" r="5" fill="#000"/><circle cx="110" cy="60" r="5" fill="#000"/><path d="M 88 70 Q 100 75 112 70" stroke="#654321" stroke-width="2" fill="none"/><path d="M 75 45 L 125 45 L 125 60 L 75 60 Z" fill="#fff"/><rect x="135" y="80" width="8" height="90" fill="#8b4513"/><rect x="130" y="75" width="18" height="90" rx="3" fill="#8b7355"/></svg>'
+            },
+            'dog': {
+                name: '멍멍이',
+                message: '충성스러운 친구를 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="110" rx="45" ry="35" fill="#d2691e"/><circle cx="100" cy="80" r="30" fill="#d2691e"/><ellipse cx="70" cy="65" rx="15" ry="25" fill="#d2691e"/><ellipse cx="130" cy="65" rx="15" ry="25" fill="#d2691e"/><circle cx="90" cy="80" r="6" fill="#000"/><circle cx="110" cy="80" r="6" fill="#000"/><circle cx="100" cy="95" r="8" fill="#000"/><path d="M 100 95 L 100 105 M 95 105 Q 100 110 105 105" stroke="#000" stroke-width="2" fill="none"/><ellipse cx="60" cy="130" rx="12" ry="8" fill="#d2691e"/><ellipse cx="140" cy="130" rx="12" ry="8" fill="#d2691e"/><path d="M 130 110 Q 145 105 155 115" stroke="#d2691e" stroke-width="8" fill="none"/></svg>'
+            },
+            'rabbit': {
+                name: '토끼',
+                message: '깡총깡총 토끼를 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="110" rx="40" ry="35" fill="#fff"/><circle cx="100" cy="75" r="28" fill="#fff"/><ellipse cx="75" cy="45" rx="12" ry="35" fill="#fff"/><ellipse cx="125" cy="45" rx="12" ry="35" fill="#fff"/><ellipse cx="75" cy="50" rx="8" ry="25" fill="#ffb6c1"/><ellipse cx="125" cy="50" rx="8" ry="25" fill="#ffb6c1"/><circle cx="90" cy="75" r="5" fill="#000"/><circle cx="110" cy="75" r="5" fill="#000"/><circle cx="100" cy="88" r="5" fill="#ffb6c1"/><path d="M 100 88 L 95 93 M 100 88 L 105 93" stroke="#000" stroke-width="2"/><circle cx="140" cy="125" r="15" fill="#fff"/></svg>'
+            },
+            'seal': {
+                name: '물개',
+                message: '귀여운 물개를 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="120" rx="50" ry="40" fill="#708090"/><ellipse cx="100" cy="80" rx="35" ry="30" fill="#708090"/><circle cx="90" cy="75" r="6" fill="#000"/><circle cx="110" cy="75" r="6" fill="#000"/><ellipse cx="100" cy="92" rx="8" ry="6" fill="#000"/><path d="M 92 85 L 80 82 M 108 85 L 120 82" stroke="#000" stroke-width="3"/><path d="M 100 92 L 95 98 M 100 92 L 105 98" stroke="#000" stroke-width="2"/><ellipse cx="50" cy="115" rx="15" ry="10" fill="#708090"/><ellipse cx="150" cy="115" rx="15" ry="10" fill="#708090"/><path d="M 140 130 Q 155 135 165 125 Q 170 120 175 125" stroke="#708090" stroke-width="12" fill="none"/><circle cx="100" cy="60" r="18" fill="#ff6b6b"/></svg>'
+            },
+            'sausage': {
+                name: '소세지',
+                message: '맛있는 소세지를 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><ellipse cx="100" cy="100" rx="80" ry="30" fill="#d2691e"/><ellipse cx="100" cy="100" rx="70" ry="25" fill="#cd853f"/><path d="M 40 100 Q 50 85 60 100" fill="none" stroke="#8b4513" stroke-width="2"/><path d="M 70 100 Q 80 85 90 100" fill="none" stroke="#8b4513" stroke-width="2"/><path d="M 100 100 Q 110 85 120 100" fill="none" stroke="#8b4513" stroke-width="2"/><path d="M 130 100 Q 140 85 150 100" fill="none" stroke="#8b4513" stroke-width="2"/><ellipse cx="30" cy="100" rx="15" ry="25" fill="#8b4513"/><ellipse cx="170" cy="100" rx="15" ry="25" fill="#8b4513"/><path d="M 60 90 Q 100 85 140 90" stroke="#fff" stroke-width="2" fill="none" opacity="0.5"/></svg>'
+            },
+            'david': {
+                name: '다윗',
+                message: '용감한 목동 왕을 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="60" r="35" fill="#f4a460"/><rect x="70" y="90" width="60" height="80" rx="10" fill="#4169e1"/><rect x="60" y="95" width="20" height="60" fill="#f4a460"/><rect x="120" y="95" width="20" height="60" fill="#f4a460"/><circle cx="90" cy="60" r="5" fill="#000"/><circle cx="110" cy="60" r="5" fill="#000"/><path d="M 88 70 Q 100 75 112 70" stroke="#654321" stroke-width="2" fill="none"/><polygon points="85,35 100,25 115,35 100,45" fill="#ffd700"/><circle cx="100" cy="35" r="3" fill="#ff0000"/><path d="M 135 90 L 165 75 M 135 95 L 165 85" stroke="#8b4513" stroke-width="3"/><circle cx="170" cy="80" r="8" fill="#a9a9a9"/></svg>'
+            },
+            'solomon': {
+                name: '솔로몬',
+                message: '지혜의 왕을 발견하셨습니다!',
+                svg: '<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><circle cx="100" cy="60" r="35" fill="#d2b48c"/><rect x="70" y="90" width="60" height="80" rx="10" fill="#800080"/><rect x="60" y="95" width="20" height="60" fill="#d2b48c"/><rect x="120" y="95" width="20" height="60" fill="#d2b48c"/><circle cx="90" cy="60" r="5" fill="#000"/><circle cx="110" cy="60" r="5" fill="#000"/><path d="M 88 70 Q 100 76 112 70" stroke="#654321" stroke-width="2" fill="none"/><polygon points="70,35 100,20 130,35 125,45 75,45" fill="#ffd700"/><circle cx="100" cy="32" r="6" fill="#ff0000"/><rect x="135" y="95" width="12" height="55" fill="#ffd700"/><circle cx="141" cy="92" r="8" fill="#ffd700"/></svg>'
+            }
+        };
+
+        // 암호화된 매핑 데이터 (Base64 + XOR)
+        const _0x4a2b = 'YTdiM2Y5YzI6cGF1bHxlNGQ4azFtOTpub2FofHAyeDVuN3czOmVsaWphaHxrOW0yeDVwMTpqZXN1c3xmM2Q3bjh3Mjptb3Nlc3xxMXI0dDZ5ODpkb2d8dzVlMnI5dDM6cmFiYml0fHo4eDRjNnYxOnNlYWx8YjJuNW03azk6c2F1c2FnZXxoNGo2bDhwMDpkYXZpZHxnM2Y1ZDdzOTpzb2xvbW9u';
+
+        function _0x3d8f(str) {
+            const key = 'treasure2025';
+            let result = '';
+            for (let i = 0; i < str.length; i++) {
+                result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return result;
+        }
+
+        function _0x9c1e() {
+            const decoded = atob(_0x4a2b);
+            const pairs = decoded.split('|');
+            const map = {};
+            pairs.forEach(pair => {
+                const [k, v] = pair.split(':');
+                map[k] = v;
+            });
+            return map;
+        }
+
+        // URL 파라미터에서 캐릭터 정보 가져오기
+        function getCharacterFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('c');
+
+            if (!code) {
+                return null;
+            }
+
+            const codeMap = _0x9c1e();
+            const charKey = codeMap[code];
+
+            if (!charKey || !CHARACTERS[charKey]) {
+                return null;
+            }
+
+            return CHARACTERS[charKey];
+        }
+
+        // 캐릭터 표시
+        function displayCharacter() {
+            const character = getCharacterFromURL();
+            const characterDisplay = document.getElementById('character-display');
+            const characterName = document.getElementById('character-name');
+            const scoreDisplay = document.getElementById('score-display');
+            const mainTitle = document.getElementById('main-title');
+
+            if (!character) {
+                // 코드가 없거나 잘못된 경우 먼지 표시
+                characterDisplay.innerHTML = '<div style="font-size: 100px;">💨</div>';
+                characterName.textContent = '먼지';
+                scoreDisplay.textContent = '먼지를 발견했습니다.';
+                mainTitle.textContent = '아쉽게도...';
+                return;
+            }
+
+            characterDisplay.innerHTML = character.svg;
+            characterName.textContent = character.name;
+            scoreDisplay.textContent = character.message;
+        }
+
+        // 페이지 로드 시 캐릭터 표시
+        displayCharacter();
+
+        // 페이지 로드 시 폭죽 효과
+        function createFirework(x, y) {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd93d', '#6bcf7f'];
+
+            // 한 번에 여러 개의 폭죽 파편 생성
+            for (let i = 0; i < 30; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = x + 'px';
+                firework.style.top = y + 'px';
+                firework.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = 80 + Math.random() * 120;
+                firework.style.setProperty('--x', Math.cos(angle) * velocity + 'px');
+                firework.style.setProperty('--y', Math.sin(angle) * velocity + 'px');
+
+                document.body.appendChild(firework);
+
+                setTimeout(() => firework.remove(), 1000);
+            }
+        }
+
+        // 랜덤 위치 폭죽
+        function createRandomFirework() {
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight;
+            createFirework(x, y);
+        }
+
+        // 색종이 효과
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd93d', '#6bcf7f', '#f093fb', '#f5576c'];
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * window.innerWidth + 'px';
+            confetti.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+
+            document.body.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 5000);
+        }
+
+        // 초기 폭죽 대폭발 연출
+        const container = document.querySelector('.container');
+        const containerRect = container.getBoundingClientRect();
+        const centerX = containerRect.left + containerRect.width / 2;
+        const centerY = containerRect.top + containerRect.height / 2;
+
+        // 중앙에서 대폭발
+        setTimeout(() => {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFirework(centerX, centerY);
+                }, i * 100);
+            }
+        }, 300);
+
+        // 주변에서도 폭죽
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createRandomFirework, 500 + i * 100);
+        }
+
+        // 지속적인 색종이 효과
+        setInterval(createConfetti, 300);
+
+        // 추가 폭죽 효과
+        setInterval(() => {
+            for (let i = 0; i < 3; i++) {
+                setTimeout(createRandomFirework, i * 200);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
